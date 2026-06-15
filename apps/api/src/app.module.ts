@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import configuration from './config/configuration';
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { HealthController } from './health.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { StoresModule } from './modules/stores/stores.module';
 import { ProductsModule } from './modules/products/products.module';
@@ -32,6 +33,7 @@ import { SeoModule } from './modules/seo/seo.module';
 import { SearchModule } from './modules/search/search.module';
 
 @Module({
+  controllers: [HealthController],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,

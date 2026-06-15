@@ -1,0 +1,10 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && pnpm --filter @shopified/shared build && pnpm --filter @shopified/storefront build",
+  "outputDirectory": ".next",
+  "installCommand": "cd ../.. && pnpm install",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@shopified_api_url",
+    "NEXT_PUBLIC_STORE_ID": "@shopified_store_id"
+  }
+}

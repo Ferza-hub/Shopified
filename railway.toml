@@ -1,0 +1,9 @@
+[build]
+dockerfilePath = "apps/api/Dockerfile"
+
+[deploy]
+startCommand = "sh apps/api/start.sh"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
