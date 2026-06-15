@@ -9,7 +9,8 @@ const img = (id: string) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=80`;
 
 function makeProduct(
-  partial: Pick<Product, 'id' | 'title' | 'handle' | 'productType' | 'price'> & {
+  partial: Pick<Product, 'id' | 'title' | 'handle' | 'productType'> & {
+    price: number;
     image: string;
     image2?: string;
     description?: string;

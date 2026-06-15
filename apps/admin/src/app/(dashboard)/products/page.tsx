@@ -94,12 +94,10 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-slate-900">Products</h1>
-        <Button asChild>
-          <Link href="/products/new">
-            <Plus className="h-4 w-4" />
-            Add product
-          </Link>
-        </Button>
+        <Link href="/products/new" className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+          <Plus className="h-4 w-4" />
+          Add product
+        </Link>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

@@ -128,8 +128,8 @@ export class UsersService {
         data: {
           email: dto.email,
           passwordHash,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
+          firstName: dto.firstName ?? '',
+          lastName: dto.lastName ?? '',
         },
       });
     }

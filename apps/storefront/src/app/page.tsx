@@ -2,42 +2,10 @@ import Link from 'next/link';
 import ProductCard from '@/components/product/product-card';
 
 const SAMPLE_PRODUCTS = [
-  {
-    id: '1',
-    handle: 'classic-tee',
-    title: 'Classic Cotton Tee',
-    price: 29.99,
-    compareAtPrice: 39.99,
-    image: null,
-    badge: 'Sale',
-  },
-  {
-    id: '2',
-    handle: 'slim-chinos',
-    title: 'Slim Fit Chinos',
-    price: 59.99,
-    compareAtPrice: null,
-    image: null,
-    badge: 'New',
-  },
-  {
-    id: '3',
-    handle: 'canvas-sneakers',
-    title: 'Canvas Sneakers',
-    price: 79.99,
-    compareAtPrice: 99.99,
-    image: null,
-    badge: null,
-  },
-  {
-    id: '4',
-    handle: 'leather-wallet',
-    title: 'Leather Wallet',
-    price: 49.99,
-    compareAtPrice: null,
-    image: null,
-    badge: 'Bestseller',
-  },
+  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, badge: 'Sale' },
+  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99, badge: 'New' },
+  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99 },
+  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, badge: 'Bestseller' },
 ];
 
 export default function HomePage() {

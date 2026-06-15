@@ -4,15 +4,15 @@ import { useState, useMemo } from 'react';
 import ProductCard from '@/components/product/product-card';
 
 const SAMPLE_PRODUCTS = [
-  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, image: null, badge: 'Sale', available: true },
-  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99, compareAtPrice: null, image: null, badge: 'New', available: true },
-  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99, image: null, badge: null, available: true },
-  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, compareAtPrice: null, image: null, badge: 'Bestseller', available: true },
-  { id: '5', handle: 'wool-scarf', title: 'Merino Wool Scarf', price: 39.99, compareAtPrice: null, image: null, badge: null, available: true },
-  { id: '6', handle: 'denim-jacket', title: 'Denim Jacket', price: 89.99, compareAtPrice: 119.99, image: null, badge: 'Sale', available: true },
-  { id: '7', handle: 'linen-shirt', title: 'Linen Shirt', price: 45.99, compareAtPrice: null, image: null, badge: null, available: false },
-  { id: '8', handle: 'running-shorts', title: 'Running Shorts', price: 34.99, compareAtPrice: null, image: null, badge: null, available: true },
-  { id: '9', handle: 'baseball-cap', title: 'Baseball Cap', price: 24.99, compareAtPrice: null, image: null, badge: null, available: true },
+  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, badge: 'Sale', available: true },
+  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99, badge: 'New', available: true },
+  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99, available: true },
+  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, badge: 'Bestseller', available: true },
+  { id: '5', handle: 'wool-scarf', title: 'Merino Wool Scarf', price: 39.99, available: true },
+  { id: '6', handle: 'denim-jacket', title: 'Denim Jacket', price: 89.99, compareAtPrice: 119.99, badge: 'Sale', available: true },
+  { id: '7', handle: 'linen-shirt', title: 'Linen Shirt', price: 45.99, available: false },
+  { id: '8', handle: 'running-shorts', title: 'Running Shorts', price: 34.99, available: true },
+  { id: '9', handle: 'baseball-cap', title: 'Baseball Cap', price: 24.99, available: true },
 ];
 
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';

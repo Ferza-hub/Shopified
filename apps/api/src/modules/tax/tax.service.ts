@@ -10,7 +10,7 @@ export class TaxService {
   async findAllRates(storeId: string) {
     return this.prisma.taxRate.findMany({
       where: { storeId },
-      orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+      orderBy: [{ priority: 'asc' }],
     });
   }
 

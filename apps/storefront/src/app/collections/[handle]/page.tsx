@@ -4,12 +4,12 @@ import { useParams } from 'next/navigation';
 import ProductCard from '@/components/product/product-card';
 
 const COLLECTION_PRODUCTS = [
-  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, image: null, badge: 'Sale' },
-  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99, compareAtPrice: null, image: null, badge: null },
-  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99, image: null, badge: null },
-  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, compareAtPrice: null, image: null, badge: 'Bestseller' },
-  { id: '5', handle: 'wool-scarf', title: 'Merino Wool Scarf', price: 39.99, compareAtPrice: null, image: null, badge: null },
-  { id: '6', handle: 'denim-jacket', title: 'Denim Jacket', price: 89.99, compareAtPrice: 119.99, image: null, badge: 'Sale' },
+  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, badge: 'Sale' },
+  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99 },
+  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99 },
+  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, badge: 'Bestseller' },
+  { id: '5', handle: 'wool-scarf', title: 'Merino Wool Scarf', price: 39.99 },
+  { id: '6', handle: 'denim-jacket', title: 'Denim Jacket', price: 89.99, compareAtPrice: 119.99, badge: 'Sale' },
 ];
 
 function formatCollectionTitle(handle: string): string {

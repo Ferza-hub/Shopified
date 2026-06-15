@@ -65,7 +65,7 @@ export default function ProductPage() {
 
   function handleAddToCart() {
     addItem(
-      { id: product.id, title: product.title, handle: product.handle, image: null },
+      { id: product.id, title: product.title, handle: product.handle },
       { id: variant.id, title: variant.title, price: variant.price },
       quantity,
     );

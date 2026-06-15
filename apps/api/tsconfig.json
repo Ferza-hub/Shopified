@@ -7,11 +7,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "strictPropertyInitialization": false,
-    "noImplicitAny": false,
-    "paths": {
-      "@shopified/shared": ["../../packages/shared/src"],
-      "@shopified/database": ["../../packages/database/src"]
-    }
+    "noImplicitAny": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

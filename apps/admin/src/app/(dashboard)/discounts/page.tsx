@@ -95,12 +95,10 @@ export default function DiscountsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-slate-900">Discounts</h1>
-        <Button asChild>
-          <Link href="/discounts/new">
-            <Plus className="h-4 w-4" />
-            Create discount
-          </Link>
-        </Button>
+        <Link href="/discounts/new" className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+          <Plus className="h-4 w-4" />
+          Create discount
+        </Link>
       </div>
 
       {isLoading ? (

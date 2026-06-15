@@ -2,14 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as fs from 'fs';
 import * as path from 'path';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class FilesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async upload(storeId: string, file: Express.Multer.File) {
-    const uuid = uuidv4();
+    const uuid = randomUUID();
     const filename = `${uuid}-${file.originalname}`;
     const dir = `/tmp/uploads/${storeId}`;
     const filePath = path.join(dir, filename);

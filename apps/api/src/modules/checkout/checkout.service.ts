@@ -47,7 +47,7 @@ export class CheckoutService {
       currency: cart.currency,
       discountCodes: cart.discountCodes,
       email: cart.email,
-      shippingAddress: cart.shippingAddress,
+      shippingAddress: (cart as any).shippingAddress ?? null,
     };
   }
 
@@ -76,7 +76,7 @@ export class CheckoutService {
       throw new NotFoundException(`Cart ${cartId} not found`);
     }
 
-    const shippingAddress = cart.shippingAddress as any;
+    const shippingAddress = (cart as any).shippingAddress as any;
     const countryCode = shippingAddress?.countryCode ?? '';
 
     // Find matching shipping zones
