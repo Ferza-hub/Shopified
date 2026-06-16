@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ProductGalleryProps {
-  images: Array<{ url: string; altText?: string }>;
+  images: Array<{ url: string; altText?: string | null }>;
   title: string;
 }
 

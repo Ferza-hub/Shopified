@@ -1,14 +1,43 @@
-import Link from 'next/link';
-import ProductCard from '@/components/product/product-card';
+'use client';
 
-const SAMPLE_PRODUCTS = [
-  { id: '1', handle: 'classic-tee', title: 'Classic Cotton Tee', price: 29.99, compareAtPrice: 39.99, badge: 'Sale' },
-  { id: '2', handle: 'slim-chinos', title: 'Slim Fit Chinos', price: 59.99, badge: 'New' },
-  { id: '3', handle: 'canvas-sneakers', title: 'Canvas Sneakers', price: 79.99, compareAtPrice: 99.99 },
-  { id: '4', handle: 'leather-wallet', title: 'Leather Wallet', price: 49.99, badge: 'Bestseller' },
-];
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import ProductCard from '@/components/product/product-card';
+import { apiGet } from '@/lib/api';
+import { sampleProducts } from '@/lib/sample-data';
+
+interface ApiProduct {
+  id: string;
+  handle: string;
+  title: string;
+  images: { url: string }[];
+  variants: { price: number; compareAtPrice?: number | null }[];
+}
+
+function toCardProps(p: ApiProduct) {
+  const variant = p.variants[0];
+  return {
+    id: p.id,
+    handle: p.handle,
+    title: p.title,
+    price: variant ? Number(variant.price) : 0,
+    compareAtPrice: variant?.compareAtPrice ? Number(variant.compareAtPrice) : undefined,
+    image: p.images[0]?.url,
+  };
+}
 
 export default function HomePage() {
+  const [products, setProducts] = useState(sampleProducts.slice(0, 4).map(p => ({
+    id: p.id, handle: p.handle, title: p.title, price: p.price ?? 0,
+    compareAtPrice: p.compareAtPrice ?? undefined, image: p.images[0]?.url,
+  })));
+
+  useEffect(() => {
+    apiGet<{ products: ApiProduct[] }>('/storefront/products?limit=4')
+      .then((res) => { if (res.products?.length) setProducts(res.products.map(toCardProps)); })
+      .catch(() => { /* keep sample data */ });
+  }, []);
+
   return (
     <div>
       {/* Hero Section */}
@@ -44,7 +73,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {/* Decorative circles */}
         <div className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-indigo-600/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
       </section>
@@ -56,15 +84,12 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold text-slate-900">Featured Products</h2>
             <p className="mt-1 text-sm text-slate-500">Handpicked for you this season</p>
           </div>
-          <Link
-            href="/products"
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
+          <Link href="/products" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
             View all &rarr;
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {SAMPLE_PRODUCTS.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>

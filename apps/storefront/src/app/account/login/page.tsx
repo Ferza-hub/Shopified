@@ -18,9 +18,9 @@ export default function AccountLoginPage() {
     setError('');
     setSubmitting(true);
     try {
-      const data = await apiPost<{ accessToken: string }>('/customers/login', { email, password });
-      if (data.accessToken) {
-        localStorage.setItem('storefront_token', data.accessToken);
+      const data = await apiPost<{ token: string }>('/storefront/customers/login', { email, password });
+      if (data.token) {
+        localStorage.setItem('storefront_token', data.token);
       }
       router.push('/account');
     } catch {

@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, Lock } from 'lucide-react';
+import { ChevronRight, Lock, CheckCircle } from 'lucide-react';
 import { useCartStore, selectSubtotal } from '@/lib/cart-store';
+import { apiPost } from '@/lib/api';
 
 type Step = 'contact' | 'shipping' | 'payment';
 const STEPS: { id: Step; label: string }[] = [
@@ -18,16 +20,67 @@ const RATES = [
 ];
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const items = useCartStore((s) => s.items);
   const subtotal = useCartStore(selectSubtotal);
+  const clear = useCartStore((s) => s.clear);
+
   const [step, setStep] = useState<Step>('contact');
   const [rate, setRate] = useState(RATES[0]);
   const [form, setForm] = useState({ email: '', firstName: '', lastName: '', address1: '', city: '', zip: '', country: 'US' });
+  const [submitting, setSubmitting] = useState(false);
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [error, setError] = useState('');
+
   const total = subtotal + rate.price;
   const idx = STEPS.findIndex((s) => s.id === step);
-
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function handlePlaceOrder() {
+    if (submitting) return;
+    setSubmitting(true);
+    setError('');
+    try {
+      const order = await apiPost<any>('/storefront/orders', {
+        email: form.email,
+        shippingAddress: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+          address1: form.address1,
+          city: form.city,
+          zip: form.zip,
+          countryCode: form.country,
+        },
+        lineItems: items.map((item) => ({
+          variantId: item.variantId,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        shippingRate: { name: rate.name, price: rate.price },
+      });
+      setOrderNumber(order.orderNumber ?? order.id);
+      clear();
+    } catch (err: any) {
+      setError(err?.response?.data?.message ?? 'Order failed. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (orderNumber) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
+        <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">Order Confirmed!</h1>
+        <p className="text-slate-500 mb-1">Thank you for your order.</p>
+        <p className="text-slate-700 font-medium mb-6">Order #{orderNumber}</p>
+        <Link href="/products" className="inline-flex items-center gap-2 rounded-full bg-black px-8 py-3 text-sm font-semibold text-white hover:bg-gray-900">
+          Continue Shopping
+        </Link>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -61,20 +114,16 @@ export default function CheckoutPage() {
             {step === 'contact' && (
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold mb-4">Contact & Shipping</h2>
-                {[
-                  { label: 'Email', key: 'email', type: 'email', placeholder: 'you@example.com', full: true },
-                ].map(({ label, key, type, placeholder, full }) => (
-                  <div key={key} className={full ? '' : ''}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-                    <input type={type || 'text'} value={(form as any)[key]} onChange={set(key)} placeholder={placeholder}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
-                  </div>
-                ))}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" value={form.email} onChange={set('email')} placeholder="you@example.com"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+                </div>
                 <div className="grid grid-cols-2 gap-4">
-                  {['firstName', 'lastName'].map((k) => (
+                  {(['firstName', 'lastName'] as const).map((k) => (
                     <div key={k}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">{k === 'firstName' ? 'First name' : 'Last name'}</label>
-                      <input value={(form as any)[k]} onChange={set(k)}
+                      <input value={form[k]} onChange={set(k)}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
                     </div>
                   ))}
@@ -96,7 +145,7 @@ export default function CheckoutPage() {
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
                   </div>
                 </div>
-                <button onClick={() => setStep('shipping')}
+                <button type="button" onClick={() => setStep('shipping')}
                   className="w-full bg-black text-white py-3.5 rounded-xl font-semibold hover:bg-gray-900 mt-2">
                   Continue to Shipping
                 </button>
@@ -120,8 +169,8 @@ export default function CheckoutPage() {
                   </label>
                 ))}
                 <div className="flex gap-3 mt-4">
-                  <button onClick={() => setStep('contact')} className="flex-1 border border-gray-300 py-3 rounded-xl font-medium text-sm">Back</button>
-                  <button onClick={() => setStep('payment')} className="flex-1 bg-black text-white py-3 rounded-xl font-semibold text-sm">Continue to Payment</button>
+                  <button type="button" onClick={() => setStep('contact')} className="flex-1 border border-gray-300 py-3 rounded-xl font-medium text-sm">Back</button>
+                  <button type="button" onClick={() => setStep('payment')} className="flex-1 bg-black text-white py-3 rounded-xl font-semibold text-sm">Continue to Payment</button>
                 </div>
               </div>
             )}
@@ -132,7 +181,8 @@ export default function CheckoutPage() {
                 <div className="border border-gray-200 rounded-xl p-4 space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Card number</label>
-                    <input placeholder="1234 5678 9012 3456" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+                    <input placeholder="1234 5678 9012 3456"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -145,10 +195,13 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
+                {error && <p className="text-sm text-red-600">{error}</p>}
                 <div className="flex gap-3 mt-4">
-                  <button onClick={() => setStep('shipping')} className="flex-1 border border-gray-300 py-3 rounded-xl font-medium text-sm">Back</button>
-                  <button className="flex-1 bg-black text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
-                    <Lock className="w-4 h-4" /> Pay ${total.toFixed(2)}
+                  <button type="button" onClick={() => setStep('shipping')} className="flex-1 border border-gray-300 py-3 rounded-xl font-medium text-sm">Back</button>
+                  <button type="button" onClick={handlePlaceOrder} disabled={submitting}
+                    className="flex-1 bg-black text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                    <Lock className="w-4 h-4" />
+                    {submitting ? 'Placing order…' : `Pay $${total.toFixed(2)}`}
                   </button>
                 </div>
                 <p className="text-xs text-center text-gray-400 flex items-center justify-center gap-1 mt-2">

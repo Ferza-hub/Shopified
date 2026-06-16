@@ -31,6 +31,7 @@ import { ThemesModule } from './modules/themes/themes.module';
 import { ChannelsModule } from './modules/channels/channels.module';
 import { SeoModule } from './modules/seo/seo.module';
 import { SearchModule } from './modules/search/search.module';
+import { StorefrontModule } from './modules/storefront/storefront.module';
 
 @Module({
   controllers: [HealthController],
@@ -71,6 +72,7 @@ import { SearchModule } from './modules/search/search.module';
     ChannelsModule,
     SeoModule,
     SearchModule,
+    StorefrontModule,
   ],
   providers: [
     {
