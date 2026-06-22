@@ -1,17 +1,17 @@
-app = "shopified-api"
-primary_region = "sin"  # Singapore — paling dekat SEA
+app = "shopified"
+primary_region = "ams"
 
 [build]
   dockerfile = "apps/api/Dockerfile"
 
-[env]
-  NODE_ENV = "production"
-  PORT = "3001"
+  [build.env]
+    NODE_ENV = "production"
+    PORT = "3001"
 
 [http_service]
-  internal_port = 3001
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
 
@@ -21,11 +21,11 @@ primary_region = "sin"  # Singapore — paling dekat SEA
     soft_limit = 150
 
 [[http_service.checks]]
-  grace_period = "30s"
   interval = "15s"
+  timeout = "5s"
+  grace_period = "30s"
   method = "GET"
   path = "/api/health"
-  timeout = "5s"
 
 [[vm]]
   size = "shared-cpu-1x"
