@@ -1,32 +1,33 @@
-app = "shopified"
-primary_region = "ams"
+# fly.toml app configuration file generated for shopified on 2026-06-22T12:53:45Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'shopified'
+primary_region = 'sin'
 
 [build]
-  dockerfile = "apps/api/Dockerfile"
-
-  [build.env]
-    NODE_ENV = "production"
-    PORT = "3001"
+  dockerfile = 'apps/api/Dockerfile'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
 
   [http_service.concurrency]
-    type = "requests"
+    type = 'requests'
     hard_limit = 200
     soft_limit = 150
 
-[[http_service.checks]]
-  interval = "15s"
-  timeout = "5s"
-  grace_period = "30s"
-  method = "GET"
-  path = "/api/health"
+  [[http_service.checks]]
+    interval = '15s'
+    timeout = '5s'
+    grace_period = '30s'
+    method = 'GET'
+    path = '/api/health'
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "512mb"
+  size = 'shared-cpu-1x'
+  memory = '512mb'
